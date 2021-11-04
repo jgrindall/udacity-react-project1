@@ -1,7 +1,7 @@
 import React, {ChangeEvent} from 'react';
 import './App.css';
 import Book from "./Book";
-import {IAppState, IBook, IMoveableBookList, ISearchState, IBookError} from "./types";
+import {IBook, IMoveableBookList, ISearchState, IBookError} from "./types";
 import {search} from "./BooksAPI";
 import * as _ from 'underscore';
 import {Link} from "react-router-dom";
@@ -32,7 +32,7 @@ class Search extends React.Component<IMoveableBookList, ISearchState> {
     }
     async performSearch(query:string){
         const results:IBook[] = await getResults(query);
-        this.setState((currentState:IAppState)=>{
+        this.setState((currentState:ISearchState)=>{
             return {
                 ...currentState,
                 results
@@ -40,8 +40,8 @@ class Search extends React.Component<IMoveableBookList, ISearchState> {
         })
     }
     onChange(e:ChangeEvent){
-        const query = e.target.value;
-        this.setState((currentState:IAppState)=>{
+        const query = (e.target as HTMLSelectElement).value;
+        this.setState((currentState:ISearchState)=>{
             return {
                 ...currentState,
                 query
@@ -53,9 +53,9 @@ class Search extends React.Component<IMoveableBookList, ISearchState> {
         const results = this.state.results || [];
         let element;
         if(results.length === 0){
-            element = <p>
+            element = (<p>
                 No results
-            </p>;
+            </p>);
         }
         else{
             const bookElements = results
