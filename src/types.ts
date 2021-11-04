@@ -1,22 +1,3 @@
-
-export interface IAppState {
-    books: IBook[]
-}
-
-export enum Shelf {
-    SHELF_CURRENTLY_READING = "currentlyReading",
-    SHELF_WANT_TO_READ = "wantToRead",
-    SHELF_READ = "read"
-}
-
-export interface IOption {
-    disabled:boolean,
-    value:string,
-    label:string
-}
-
-export type Action = Shelf | "move" | "none";
-
 export interface IBook{
     id:string,
     title:string,
@@ -29,33 +10,44 @@ export interface IBook{
     shelf?: Shelf
 }
 
+export enum Shelf {
+    SHELF_CURRENTLY_READING = "currentlyReading",
+    SHELF_WANT_TO_READ = "wantToRead",
+    SHELF_READ = "read"
+}
+
+type MoveFn = (selectedBook:IBook, shelf:Shelf) => void;
+
+export interface IAppState {
+    books: IBook[]
+}
+
+export interface IMoveableBook {
+    book: IBook;
+    onMove:MoveFn;
+}
+
+export interface IMoveableBookList{
+    books:IBook[],
+    onMove:MoveFn
+}
+
+export interface IOption {
+    disabled:boolean,
+    value:string,
+    label:string
+}
+
 export interface IBookError {
     error:string,
     items:any[]
 }
 
-export interface IBookListProps{
-    books:IBook[],
-    onMove:Function
-}
-
-export interface IBookshelfProps{
-    books:IBook[],
-    onMove:Function,
+export interface IBookshelf extends IMoveableBookList{
     label:string
 }
 
-export interface IBookProps{
-    book:IBook,
-    onMove:Function
-}
-
-export interface ISearchProps{
-    books:IBook[],
-    onMove:Function
-}
-
 export interface ISearchState{
-    books:IBook[],
+    results:IBook[],
     query:string
 }

@@ -1,7 +1,7 @@
 import React, {ChangeEvent} from 'react';
 import './App.css';
 import Book from "./Book";
-import {IAppState, IBook, ISearchProps, ISearchState, IBookError} from "./types";
+import {IAppState, IBook, IMoveableBookList, ISearchState, IBookError} from "./types";
 import {search} from "./BooksAPI";
 import * as _ from 'underscore';
 import {Link} from "react-router-dom";
@@ -21,21 +21,21 @@ async function getResults(query:string): Promise<IBook[] | IBookError>{
     }
 }
 
-class Search extends React.Component<ISearchProps, ISearchState> {
-    constructor(props:ISearchProps) {
+class Search extends React.Component<IMoveableBookList, ISearchState> {
+    constructor(props:IMoveableBookList) {
         super(props);
         this.performSearch = _.debounce(this.performSearch.bind(this), 500);
         this.state = {
-            books:[],
+            results:[],
             query: ""
         }
     }
     async performSearch(query:string){
-        const books:IBook[] = await getResults(query);
+        const results:IBook[] = await getResults(query);
         this.setState((currentState:IAppState)=>{
             return {
                 ...currentState,
-                books
+                results
             };
         })
     }
@@ -50,15 +50,16 @@ class Search extends React.Component<ISearchProps, ISearchState> {
         this.performSearch(query);
     }
     render(){
-        const books = this.state.books || [];
-        let results;
-        if(books.length === 0){
-            results = <p>
+        const results = this.state.results || [];
+        let element;
+        if(results.length === 0){
+            element = <p>
                 No results
             </p>;
         }
         else{
-            const bookElements = books
+            const bookElements = results
+
                 .map( (book:IBook)=> {
                     // add in the correct shelf if it exists in your shelves
                     const currentBook = this.props.books.find(b => book.id === b.id);
@@ -69,7 +70,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
                     return <Book onMove={this.props.onMove} key={book.id} book={book}/>
                 });
 
-            results = <ol className="books-grid">
+            element = <ol className="books-grid">
                 {bookElements}
             </ol>;
         }
@@ -90,7 +91,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
                     </div>
                 </div>
                 <div className="search-books-results">
-                    {results}
+                    {element}
                 </div>
             </div>
         );
