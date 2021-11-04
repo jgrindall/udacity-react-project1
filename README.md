@@ -13,13 +13,26 @@ https://review.udacity.com/#!/rubrics/918/view
 
 
 
-![Screenshot](/Clipboard01.png)
+#### Screenshots:
+
+1. Books are correctly shown with their current shelf disabled.
 
 ![Screenshot](/Clipboard03.png)
 
+2. Green/blue used for 'on a shelf' / 'not on a shelf'
+
+![Screenshot](/Clipboard01.png)
+
+
+3. When searching, green books are shown with the correct shelf
+
 ![Screenshot](/Clipboard04.png)
 
+4. Blue books are shown with "none"
+
 ![Screenshot](/Clipboard06.png)
+
+
 
 #### Running locally:
 
