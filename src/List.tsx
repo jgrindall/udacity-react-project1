@@ -24,6 +24,7 @@ const List = (props:IMoveableBookList) => {
                     {
                         shelves.map( (shelf:Shelf, i:number)=>{
                             return <Bookshelf
+                                key={shelf}
                                 onMove={props.onMove}
                                 books={books[i]}
                                 label={getLabel(shelves[i])}>
